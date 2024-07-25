@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@wdio/cli": "^8.39.1",
     "webdriverio": "^7.16.4"
   }
 }
