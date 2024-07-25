@@ -157,7 +157,7 @@ async function testCase10(client) {
 }
 
 // Main function to run all test cases
-(async () => {
+async function runTests() {
     const client = await remote({
         logLevel: 'info',
         hostname: 'localhost',
@@ -188,4 +188,6 @@ async function testCase10(client) {
     } finally {
         await client.deleteSession();
     }
-})();
+}
+
+runTests();
