@@ -160,12 +160,15 @@ async function testCase10(client) {
 (async () => {
     const client = await remote({
         logLevel: 'info',
-        path: '/wd/hub',
+        hostname: 'localhost',
+        port: 4723,
+        path: '/',
         capabilities: {
             platformName: 'iOS',
-            deviceName: 'iPhone Simulator',
-            app: '/path/to/your/app.app',
-            automationName: 'XCUITest',
+            'appium:deviceName': 'iPhone 13',
+            'appium:platformVersion': '14.5',
+            'appium:app': '/path/to/your/app.app',
+            'appium:automationName': 'XCUITest',
         },
     });
 
