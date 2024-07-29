@@ -13,8 +13,8 @@ class TestFlightBooking:
         options = UiAutomator2Options()
         options.platform_name = 'Android'
         options.device_name = 'emulator-5554'
-        options.app_package = 'com.krishvmehta.application'
-        options.app_activity = 'MainActivity'
+        options.app_package = 'com.ixigo.train.ixitrain'
+        options.app_activity = 'com.ixigo.train.ixitrain.TrainActivity'
         options.no_reset = True
 
         self.driver = None
