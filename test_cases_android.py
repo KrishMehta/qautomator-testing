@@ -33,23 +33,23 @@ class TestFlightBooking:
         """
         # Wait for the Home screen to load
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//android.widget.TextView[@text='Trains']"))
+            EC.presence_of_element_located((AppiumBy.XPATH, "//android.widget.TextView[@text='Trains']"))
         )
-        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='Trains']").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Trains']").is_displayed()
 
     def test_case_2(self):
         """
         Verify that selecting the train status application transitions to the loading screen.
         """
         # Select the application for checking train status
-        train_status_button = self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='PNR Status']")
+        train_status_button = self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='PNR Status']")
         train_status_button.click()
 
         # Wait for the loading screen
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']"))
+            EC.presence_of_element_located((AppiumBy.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']"))
         )
-        assert self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
 
     def test_case_3(self):
         """
@@ -58,9 +58,9 @@ class TestFlightBooking:
         self.test_case_2()  # Navigate to PNR Status screen
 
         # Verify elements on the PNR status screen
-        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='Running Status']").is_displayed()
-        assert self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
-        assert self.driver.find_element(By.XPATH, "//android.widget.Button[@text='Search']").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Running Status']").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.Button[@text='Search']").is_displayed()
 
     def test_case_4(self):
         """
@@ -69,11 +69,11 @@ class TestFlightBooking:
         self.test_case_3()  # Navigate to PNR Status screen
 
         # Enter a PNR number
-        pnr_input_field = self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']")
+        pnr_input_field = self.driver.find_element(AppiumBy.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']")
         pnr_input_field.send_keys("1234567890")
 
         # Click the "Search" button
-        search_button = self.driver.find_element(By.XPATH, "//android.widget.Button[@text='Search']")
+        search_button = self.driver.find_element(AppiumBy.XPATH, "//android.widget.Button[@text='Search']")
         search_button.click()
 
         # Verify the input is retained
@@ -87,9 +87,9 @@ class TestFlightBooking:
 
         # Wait for the notification prompt
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//android.widget.TextView[contains(@text, 'Add Manager')]"))
+            EC.presence_of_element_located((AppiumBy.XPATH, "//android.widget.TextView[contains(@text, 'Add Manager')]"))
         )
-        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[contains(@text, 'Add Manager')]").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[contains(@text, 'Add Manager')]").is_displayed()
 
     def test_case_6(self):
         """
@@ -98,18 +98,18 @@ class TestFlightBooking:
         self.test_case_3()  # Navigate to PNR Status screen
 
         # Enter an invalid PNR number
-        pnr_input_field = self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']")
+        pnr_input_field = self.driver.find_element(AppiumBy.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']")
         pnr_input_field.send_keys("12345")
 
         # Click the "Search" button
-        search_button = self.driver.find_element(By.XPATH, "//android.widget.Button[@text='Search']")
+        search_button = self.driver.find_element(AppiumBy.XPATH, "//android.widget.Button[@text='Search']")
         search_button.click()
 
         # Wait for the error message
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//android.widget.TextView[@text='PNR No. is not valid']"))
+            EC.presence_of_element_located((AppiumBy.XPATH, "//android.widget.TextView[@text='PNR No. is not valid']"))
         )
-        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='PNR No. is not valid']").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='PNR No. is not valid']").is_displayed()
 
     def test_case_7(self):
         """
@@ -118,11 +118,11 @@ class TestFlightBooking:
         self.test_case_6()  # Trigger invalid PNR message
 
         # Click "OK" on the alert
-        ok_button = self.driver.find_element(By.XPATH, "//android.widget.Button[@text='OK']")
+        ok_button = self.driver.find_element(AppiumBy.XPATH, "//android.widget.Button[@text='OK']")
         ok_button.click()
 
         # Verify the user is returned to the PNR status screen
-        assert self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
 
     def test_case_8(self):
         """
@@ -131,15 +131,15 @@ class TestFlightBooking:
         self.test_case_7()  # Return to PNR Status screen
 
         # Enter a valid PNR number
-        pnr_input_field = self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']")
+        pnr_input_field = self.driver.find_element(AppiumBy.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']")
         pnr_input_field.send_keys("1234567890")
 
         # Click the "Search" button
-        search_button = self.driver.find_element(By.XPATH, "//android.widget.Button[@text='Search']")
+        search_button = self.driver.find_element(AppiumBy.XPATH, "//android.widget.Button[@text='Search']")
         search_button.click()
 
         # Verify the input is processed
-        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[contains(@text, 'Add Manager')]").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[contains(@text, 'Add Manager')]").is_displayed()
 
     def test_case_9(self):
         """
@@ -148,11 +148,11 @@ class TestFlightBooking:
         self.test_case_3()  # Navigate to PNR Status screen
 
         # Click back button
-        back_button = self.driver.find_element(By.XPATH, "//android.widget.ImageView[@resource-id='com.ixigo.train.ixitrain:id/iv_toolbar_back']")
+        back_button = self.driver.find_element(AppiumBy.XPATH, "//android.widget.ImageView[@resource-id='com.ixigo.train.ixitrain:id/iv_toolbar_back']")
         back_button.click()
 
         # Verify the home screen is displayed
-        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='Trains']").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Trains']").is_displayed()
 
     def test_case_10(self):
         """
@@ -161,9 +161,9 @@ class TestFlightBooking:
         self.test_case_3()  # Navigate to PNR Status screen
 
         # Verify static UI elements
-        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='Running Status']").is_displayed()
-        assert self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
-        assert self.driver.find_element(By.XPATH, "//android.widget.Button[@text='Search']").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Running Status']").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
+        assert self.driver.find_element(AppiumBy.XPATH, "//android.widget.Button[@text='Search']").is_displayed()
 
 
 if __name__ == "__main__":
