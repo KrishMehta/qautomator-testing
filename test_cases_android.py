@@ -29,98 +29,141 @@ class TestFlightBooking:
 
     def test_case_1(self):
         """
-        Verify the app launches and displays the home screen with the app logo.
-        Steps:
-            1. Launch the application.
-            2. Observe the home screen.
-        Expected Outcome: The app logo is prominently displayed, and various app icons are visible on the home screen.
+        Verify that the app launches and displays the home screen with app icons.
         """
-        # Wait for the home screen to load
+        # Wait for the Home screen to load
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((AppiumBy.XPATH, "android.widget.FrameLayout[@resource-id='com.ixigo.train.ixitrain:id/action_bar_root']"))
+            EC.presence_of_element_located((By.XPATH, "//android.widget.TextView[@text='Trains']"))
         )
-        app_logo = self.driver.find_element(AppiumBy.XPATH, "android.widget.ImageView[@resource-id='com.ixigo.train.ixitrain:id/iv_logo']")
-        assert app_logo.is_displayed(), "App logo is not displayed on the home screen."
+        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='Trains']").is_displayed()
 
     def test_case_2(self):
         """
-        Verify the splash screen is displayed during app loading.
-        Steps:
-            1. Launch the application.
-            2. Observe the splash screen.
-        Expected Outcome: The splash screen with the app logo is displayed until the app is fully loaded.
+        Verify that selecting the train status application transitions to the loading screen.
         """
-        # Wait for the splash screen to load
+        # Select the application for checking train status
+        train_status_button = self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='PNR Status']")
+        train_status_button.click()
+
+        # Wait for the loading screen
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((AppiumBy.XPATH, "android.widget.ImageView[@resource-id='com.ixigo.train.ixitrain:id/iv_logo']"))
+            EC.presence_of_element_located((By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']"))
         )
-        splash_screen = self.driver.find_element(AppiumBy.XPATH, "android.widget.ImageView[@resource-id='com.ixigo.train.ixitrain:id/iv_logo']")
-        assert splash_screen.is_displayed(), "Splash screen is not displayed."
+        assert self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
 
     def test_case_3(self):
         """
-        Verify the login screen is displayed with login options.
-        Steps:
-            1. After the splash screen, observe the login screen.
-        Expected Outcome: The login screen displays options for logging in via Facebook, Google, and a button to continue as a guest.
+        Verify that the PNR status screen displays the correct title and input field.
         """
-        # Wait for the login screen to load
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((AppiumBy.XPATH, "android.widget.Button[@text='Continue as Guest']"))
-        )
-        guest_button = self.driver.find_element(AppiumBy.XPATH, "android.widget.Button[@text='Continue as Guest']")
-        assert guest_button.is_displayed(), "Login screen is not displayed with login options."
+        self.test_case_2()  # Navigate to PNR Status screen
+
+        # Verify elements on the PNR status screen
+        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='Running Status']").is_displayed()
+        assert self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
+        assert self.driver.find_element(By.XPATH, "//android.widget.Button[@text='Search']").is_displayed()
 
     def test_case_4(self):
         """
-        Verify the search bar functionality on the main screen.
-        Steps:
-            1. Log in to the app.
-            2. Observe the main screen.
-            3. Click on the search bar labeled "Search for destinations..."
-        Expected Outcome: The search bar is active, and a keyboard appears for text input.
+        Verify that entering a PNR number and clicking "Search" retains the input.
         """
-        self.test_case_3()  # Ensure we are on the login screen
-        # Simulate login (assuming login is successful)
-        self.driver.find_element(AppiumBy.XPATH, "android.widget.Button[@text='Continue as Guest']").click()
+        self.test_case_3()  # Navigate to PNR Status screen
 
-        # Wait for the main screen to load
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((AppiumBy.XPATH, "android.widget.EditText[@text='Search for destinations...']"))
-        )
-        search_bar = self.driver.find_element(AppiumBy.XPATH, "android.widget.EditText[@text='Search for destinations...']")
-        search_bar.click()
-        assert search_bar.is_displayed(), "Search bar is not displayed on the main screen."
+        # Enter a PNR number
+        pnr_input_field = self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']")
+        pnr_input_field.send_keys("1234567890")
+
+        # Click the "Search" button
+        search_button = self.driver.find_element(By.XPATH, "//android.widget.Button[@text='Search']")
+        search_button.click()
+
+        # Verify the input is retained
+        assert pnr_input_field.get_attribute('text').strip() == "1234567890"
 
     def test_case_5(self):
         """
-        Verify the Preferred Section is displayed on the main screen.
-        Steps:
-            1. Log in to the app.
-            2. Observe the main screen.
-        Expected Outcome: The Preferred Section is visible, showing frequently searched destinations or saved trips.
+        Verify that the app prompts for notification permissions after searching with a valid PNR.
         """
-        self.test_case_4()  # Ensure we are on the main screen
-        preferred_section = self.driver.find_element(AppiumBy.XPATH, "android.widget.TextView[@text='Preferred Section']")
-        assert preferred_section.is_displayed(), "Preferred Section is not displayed on the main screen."
+        self.test_case_4()  # Enter a valid PNR number
+
+        # Wait for the notification prompt
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//android.widget.TextView[contains(@text, 'Add Manager')]"))
+        )
+        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[contains(@text, 'Add Manager')]").is_displayed()
 
     def test_case_6(self):
         """
-        Verify the selection of the "Flights" option.
-        Steps:
-            1. Log in to the app.
-            2. On the main screen, select the "Flights" option.
-        Expected Outcome: The app transitions to the flight search options screen.
+        Verify that searching with an invalid PNR displays an error message.
         """
-        self.test_case_4()  # Ensure we are on the main screen
-        flights_option = self.driver.find_element(AppiumBy.XPATH, "android.widget.TextView[@text='Flights']")
-        flights_option.click()
+        self.test_case_3()  # Navigate to PNR Status screen
 
-        # Wait for the flight search options screen to load
+        # Enter an invalid PNR number
+        pnr_input_field = self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']")
+        pnr_input_field.send_keys("12345")
+
+        # Click the "Search" button
+        search_button = self.driver.find_element(By.XPATH, "//android.widget.Button[@text='Search']")
+        search_button.click()
+
+        # Wait for the error message
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((AppiumBy.XPATH, "android.widget.TextView[@text='Search Flights']"))
+            EC.presence_of_element_located((By.XPATH, "//android.widget.TextView[@text='PNR No. is not valid']"))
         )
-        assert self.driver.find_element(AppiumBy.XPATH, "android.widget.TextView[@text='Search Flights']").is_displayed(), "Flight search options screen is not displayed."
+        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='PNR No. is not valid']").is_displayed()
+
+    def test_case_7(self):
+        """
+        Verify that acknowledging the invalid PNR message returns the user to the previous screen.
+        """
+        self.test_case_6()  # Trigger invalid PNR message
+
+        # Click "OK" on the alert
+        ok_button = self.driver.find_element(By.XPATH, "//android.widget.Button[@text='OK']")
+        ok_button.click()
+
+        # Verify the user is returned to the PNR status screen
+        assert self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
+
+    def test_case_8(self):
+        """
+        Verify that the user can re-enter a valid PNR number after an invalid entry.
+        """
+        self.test_case_7()  # Return to PNR Status screen
+
+        # Enter a valid PNR number
+        pnr_input_field = self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']")
+        pnr_input_field.send_keys("1234567890")
+
+        # Click the "Search" button
+        search_button = self.driver.find_element(By.XPATH, "//android.widget.Button[@text='Search']")
+        search_button.click()
+
+        # Verify the input is processed
+        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[contains(@text, 'Add Manager')]").is_displayed()
+
+    def test_case_9(self):
+        """
+        Verify that the user can navigate back to the home screen from the PNR status screen.
+        """
+        self.test_case_3()  # Navigate to PNR Status screen
+
+        # Click back button
+        back_button = self.driver.find_element(By.XPATH, "//android.widget.ImageView[@resource-id='com.ixigo.train.ixitrain:id/iv_toolbar_back']")
+        back_button.click()
+
+        # Verify the home screen is displayed
+        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='Trains']").is_displayed()
+
+    def test_case_10(self):
+        """
+        Verify the presence of static UI elements on the PNR status screen.
+        """
+        self.test_case_3()  # Navigate to PNR Status screen
+
+        # Verify static UI elements
+        assert self.driver.find_element(By.XPATH, "//android.widget.TextView[@text='Running Status']").is_displayed()
+        assert self.driver.find_element(By.XPATH, "//android.widget.EditText[@text='Enter your 10 digit PNR']").is_displayed()
+        assert self.driver.find_element(By.XPATH, "//android.widget.Button[@text='Search']").is_displayed()
 
 
 if __name__ == "__main__":
@@ -134,6 +177,10 @@ if __name__ == "__main__":
             test.test_case_4()
             test.test_case_5()
             test.test_case_6()
+            test.test_case_7()
+            test.test_case_8()
+            test.test_case_9()
+            test.test_case_10()
         finally:
             test.teardown()
     except Exception as e:
