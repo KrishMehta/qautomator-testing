@@ -20,7 +20,26 @@ class TestFlightBooking:
         self.driver = None
 
         try:
-            self.driver = webdriver.Remote('http://localhost:4723/session', options=options)
+            self.driver = webdriver.Remote('http://localhost:4723/wd/hub', options=options)
+
+            # Navigate to the home screen
+            self.driver.press_keycode(3)
+
+            # Open the app drawer
+            self.driver.swipe(start_x=500, start_y=1500, end_x=500, end_y=500, duration=800)
+            WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((AppiumBy.XPATH, "//android.widget.TextView[@text='ixigo trains']"))
+            )
+
+            # Click on the ixigo app icon
+            ixigo_icon = self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='ixigo trains']")
+            ixigo_icon.click()
+
+            # Wait until the app is launched
+            WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((AppiumBy.XPATH, "//android.widget.TextView[@text='Trains']"))
+            )
+
         except Exception as e:
             logging.error(f"Error setting up Appium driver: {e}")
             raise
@@ -219,4 +238,3 @@ if __name__ == "__main__":
             test.teardown()
     except Exception as e:
         logging.error(f"Error during test execution: {e}")
-        
