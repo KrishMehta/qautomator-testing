@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 logging.basicConfig(level=logging.INFO)
 
+
 class TestFlightBooking:
     def setup(self):
         # Set up the Appium options
@@ -240,7 +241,7 @@ class TestFlightBooking:
             )
             back_button = self.driver.find_element(AppiumBy.XPATH, "//android.widget.ImageView[@resource-id='com.ixigo.train.ixitrain:id/iv_toolbar_back']")
             back_button.click()
-            
+
             WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((AppiumBy.XPATH, "//android.widget.TextView[@text='Trains']"))
             )

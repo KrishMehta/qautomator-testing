@@ -1,4 +1,4 @@
-const { remote } = require('webdriverio');
+const {remote} = require('webdriverio');
 
 async function testCase1(client) {
     try {
