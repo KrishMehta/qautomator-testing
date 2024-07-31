@@ -52,9 +52,7 @@ def teardown():
 
 
 if __name__ == "__main__":
-    try:
-        setup()
-        codeSnipper = """
+    codeSnippet = """
 def test_case_1():
     try:
         WebDriverWait(driver, 10).until(
@@ -68,7 +66,9 @@ def test_case_1():
 
 test_case_1()
         """
-        exec(codeSnipper)
+    try:
+        setup()
+        exec(codeSnippet)
     except Exception as e:
         logging.error(f"Error during test execution: {e}")
     finally:
