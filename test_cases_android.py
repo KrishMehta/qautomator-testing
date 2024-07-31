@@ -9,6 +9,7 @@ logging.basicConfig(level=logging.INFO)
 
 driver = None
 
+
 def setup():
     global driver
     options = UiAutomator2Options()
@@ -43,10 +44,12 @@ def setup():
         logging.error(f"Error setting up Appium driver: {e}")
         raise
 
+
 def teardown():
     global driver
     if driver:
         driver.quit()
+
 
 if __name__ == "__main__":
     try:
